@@ -17,5 +17,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('ingresar', 'LoginController@ingresar');
-Route::post('guardar-usuario', 'UsuarioController@guardar');
+Route::group([
+    'prefix' => 'auth'
+], function ($router) {
+    Route::post('login', 'LoginController@login');
+    Route::post('logout', 'LoginController@logout');
+    Route::post('refresh', 'LoginController@refresh');
+    Route::post('me', 'LoginController@me');
+});
+
+Route::post('subir-padron', 'UsuarioSunatController@subirPadron');

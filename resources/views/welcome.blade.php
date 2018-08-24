@@ -10,9 +10,9 @@
 
     {!! Html::style('css/app.css') !!}
   </head>
-    <body class="text-center">
+    <body>
       <div id="app" style="width: 100%">
-        <login-component></login-component>
+        <main-component></main-component>
       </div>
       {!! Html::script('js/app.js') !!}
     </body>
