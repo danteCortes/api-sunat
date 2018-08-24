@@ -7,21 +7,25 @@
       <div class="col-md-6">
         <div class="card">
           <div class="card-body">
+            <p class="text-primary" style="margin-bottom: 0px;">Modelo del padrón reducido sunat</p>
+            <img class="card-img-top img-thumbnail" :src="'storage/img/subirpadron.png'" alt="Card image cap">
             <h4 class="card-title">
               Subir Padron:
             </h4>
-            <form id="frmSubirPadron">
+            <form id="frmSubirPadron" @submit.prevent="subirPadron">
               <div class="form-group row">
                 <label class="col-form-label col-md-3">Archivo: </label>
                 <div class="col-md-9">
                   <div class="custom-file">
-                    <input type="file" class="form-control-sm custom-file-input" @change="agregarArchivo">
+                    <input type="file" class="form-control-sm custom-file-input" @change="agregarArchivo"
+                    id="fileSubirPadron">
                     <label class="custom-file-label" v-text="nombre"></label>
                   </div>
                 </div>
               </div>
               <span v-text="respuesta"></span>
-              <button class="btn btn-primary" @click.prevent="subirPadron">Subir Padron</button>
+              <button class="btn btn-primary btn-sm" id="btnSubirPadron">
+                Subir Padron</button>
             </form>
           </div>
         </div>
@@ -46,6 +50,8 @@
         this.nombre = this.archivo.name;
       },
       subirPadron(){
+        $("#fileSubirPadron").attr('disabled', 'true');
+        $("#btnSubirPadron").attr('disabled', 'true');
         var data = new  FormData();
         data.append('padron', this.archivo);
         axios.post('/api/subir-padron', data)
@@ -53,8 +59,15 @@
           this.archivo = null;
           this.nombre = 'Subir Archivo';
           this.respuesta = response.data;
+          $("#btnSubirPadron").removeAttr('disabled');
+          $("#fileSubirPadron").removeAttr('disabled');
+        }).catch((errors) => {
+          this.archivo = null;
+          this.nombre = 'Subir Archivo';
+          this.respuesta = response.data;
+          $("#btnSubirPadron").removeAttr('disabled');
+          $("#fileSubirPadron").removeAttr('disabled');
         });
-        console.log("subir padron");
       }
     }
   }

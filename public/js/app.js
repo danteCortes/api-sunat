@@ -52108,6 +52108,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'padron-sunat',
@@ -52127,14 +52131,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     subirPadron: function subirPadron() {
       var _this = this;
 
+      $("#fileSubirPadron").attr('disabled', 'true');
+      $("#btnSubirPadron").attr('disabled', 'true');
       var data = new FormData();
       data.append('padron', this.archivo);
       axios.post('/api/subir-padron', data).then(function (response) {
         _this.archivo = null;
         _this.nombre = 'Subir Archivo';
         _this.respuesta = response.data;
+        $("#btnSubirPadron").removeAttr('disabled');
+        $("#fileSubirPadron").removeAttr('disabled');
+      }).catch(function (errors) {
+        _this.archivo = null;
+        _this.nombre = 'Subir Archivo';
+        _this.respuesta = response.data;
+        $("#btnSubirPadron").removeAttr('disabled');
+        $("#fileSubirPadron").removeAttr('disabled');
       });
-      console.log("subir padron");
     }
   }
 });
@@ -52154,48 +52167,74 @@ var render = function() {
       _c("div", { staticClass: "col-md-6" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-body" }, [
+            _c(
+              "p",
+              {
+                staticClass: "text-primary",
+                staticStyle: { "margin-bottom": "0px" }
+              },
+              [_vm._v("Modelo del padrón reducido sunat")]
+            ),
+            _vm._v(" "),
+            _c("img", {
+              staticClass: "card-img-top img-thumbnail",
+              attrs: {
+                src: "storage/img/subirpadron.png",
+                alt: "Card image cap"
+              }
+            }),
+            _vm._v(" "),
             _c("h4", { staticClass: "card-title" }, [
               _vm._v("\n            Subir Padron:\n          ")
             ]),
             _vm._v(" "),
-            _c("form", { attrs: { id: "frmSubirPadron" } }, [
-              _c("div", { staticClass: "form-group row" }, [
-                _c("label", { staticClass: "col-form-label col-md-3" }, [
-                  _vm._v("Archivo: ")
+            _c(
+              "form",
+              {
+                attrs: { id: "frmSubirPadron" },
+                on: {
+                  submit: function($event) {
+                    $event.preventDefault()
+                    return _vm.subirPadron($event)
+                  }
+                }
+              },
+              [
+                _c("div", { staticClass: "form-group row" }, [
+                  _c("label", { staticClass: "col-form-label col-md-3" }, [
+                    _vm._v("Archivo: ")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-md-9" }, [
+                    _c("div", { staticClass: "custom-file" }, [
+                      _c("input", {
+                        staticClass: "form-control-sm custom-file-input",
+                        attrs: { type: "file", id: "fileSubirPadron" },
+                        on: { change: _vm.agregarArchivo }
+                      }),
+                      _vm._v(" "),
+                      _c("label", {
+                        staticClass: "custom-file-label",
+                        domProps: { textContent: _vm._s(_vm.nombre) }
+                      })
+                    ])
+                  ])
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "col-md-9" }, [
-                  _c("div", { staticClass: "custom-file" }, [
-                    _c("input", {
-                      staticClass: "form-control-sm custom-file-input",
-                      attrs: { type: "file" },
-                      on: { change: _vm.agregarArchivo }
-                    }),
-                    _vm._v(" "),
-                    _c("label", {
-                      staticClass: "custom-file-label",
-                      domProps: { textContent: _vm._s(_vm.nombre) }
-                    })
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("span", { domProps: { textContent: _vm._s(_vm.respuesta) } }),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-primary",
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.subirPadron($event)
-                    }
-                  }
-                },
-                [_vm._v("Subir Padron")]
-              )
-            ])
+                _c("span", {
+                  domProps: { textContent: _vm._s(_vm.respuesta) }
+                }),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-sm",
+                    attrs: { id: "btnSubirPadron" }
+                  },
+                  [_vm._v("\n              Subir Padron")]
+                )
+              ]
+            )
           ])
         ])
       ])

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use File;
 use App\Http\Traits\UsuarioSunatTrait;
+use App\UsuarioSunat;
 
 class UsuarioSunatController extends Controller{
   
@@ -34,8 +35,11 @@ class UsuarioSunatController extends Controller{
         'manzana'             => $linea[13],
         'kilometro'           => $linea[14]
       ];
-      
-      $respuesta = UsuarioSunatTrait::guardar($usuario_sunat);
+
+      if(!UsuarioSunat::where('ruc', $usuario_sunat['ruc'])->first()){
+
+        $respuesta = UsuarioSunatTrait::guardar($usuario_sunat);
+      }      
     }
 
     return "usuarios registrados";
